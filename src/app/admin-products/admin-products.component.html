@@ -51,25 +51,25 @@
 
             <div class="form-group">
                 <label for="product-name"> Name</label>
-                <input #p_name [value]="selectedProduct.name" (keyup.enter)="pPrice.focus()" type="text" class="form-control" id="product-name"
+                <input [(ngModel)]="selectedProduct.name" (keyup.enter)="pPrice.focus()" type="text" class="form-control" id="product-name"
                 >
             </div>
             <div class="form-group">
                 <label for="product-price"> Price</label>
-                <input #pPrice [value]="selectedProduct.price" (keyup.enter)="pDesc.focus()" type="text" class="form-control" id="product-price"
+                <input #pPrice [(ngModel)]="selectedProduct.price" (keyup.enter)="pDesc.focus()" type="text" class="form-control" id="product-price"
                 >
             </div>
             <div class="form-group">
                 <label for="product-desc"> Description</label>
-                <input #pDesc [value]="selectedProduct.description" (keyup.enter)="pImgUrl.focus()" type="text" class="form-control" id="product-desc"
+                <input #pDesc [(ngModel)]="selectedProduct.description" (keyup.enter)="pImgUrl.focus()" type="text" class="form-control" id="product-desc"
                 >
             </div>
             <div class="form-group">
                 <label for="product-image"> Image Url</label>
-                <input #pImgUrl [value]="selectedProduct.imageUrl" (keyup.enter)="editProduct(selectedProduct)" type="text" class="product-image" id="search-product"
+                <input #pImgUrl [(ngModel)]="selectedProduct.imageUrl" (keyup.enter)="editProduct(selectedProduct)" type="text" class="product-image" id="search-product"
                 >
                 <button class="btn btn-primary mt-3" (click)="
-                    updateProduct(p_name.value, pPrice.value,pDesc.value,pImgUrl.value)
+                    updateProduct()
                 ">Update</button>
             </div>
         </div>

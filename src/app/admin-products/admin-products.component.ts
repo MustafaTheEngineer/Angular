@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Product } from '../product/product.model';
 import { ProductRepository } from '../repository.model';
+import { FormsModule } from "@angular/forms";
 
 @Component({
   selector: 'admin-products',
@@ -39,15 +40,14 @@ export class AdminProductsComponent {
     this.selectedProduct = product;
    }
 
-   updateProduct(p_name:string,pPrice:string,pDesc:string,pImgUrl:string){
-    console.log(this.selectedProduct);
+   updateProduct(){
     if(this.selectedProduct.id != 0){
-      let newProduct:Product = this.products[this.selectedProduct.id - 1];
-      
-      newProduct.name = p_name;
-      newProduct.price = parseInt(pPrice);
-      newProduct.description = pDesc;
-      newProduct.imageUrl = pImgUrl;
+      const newProduct:Product = this.model.getProductById(this.selectedProduct.id);
+
+      newProduct.name = this.selectedProduct.name;
+      newProduct.price = this.selectedProduct.price;
+      newProduct.description = this.selectedProduct.description;
+      newProduct.imageUrl = this.selectedProduct.imageUrl;
 
       this.selectedProduct = {
         id: 0,
