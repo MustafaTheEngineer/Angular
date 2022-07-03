@@ -5,16 +5,20 @@ import { AppComponent } from './app.component';
 import { ProductComponent } from './product/product.component';
 import { SummaryPipe } from './summary.pipe';
 import { InputEmailDirective } from './input-email.directive';
+import { AdminProductsComponent } from './admin-products/admin-products.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
     AppComponent,
     ProductComponent,
     SummaryPipe,
-    InputEmailDirective
+    InputEmailDirective,
+    AdminProductsComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
