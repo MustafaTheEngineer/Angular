@@ -20,7 +20,7 @@ export class ProductComponent implements OnInit {
 
   addProduct(){
     this.model.addProduct(
-      new Product(6,"Galaxy M36","Best phone","6.webp")
+      new Product(6,"Galaxy M36",15000,"Best phone","6.webp")
     );
   }
 
