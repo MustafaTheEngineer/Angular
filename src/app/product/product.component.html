@@ -1,108 +1,63 @@
-<!-- ngIf -->
+<div class="container">
+    <div class="row">
+        <div class="col-8">
+            <div class="m-3">
+                <div class="bg-info text-white m-2 p-2">
+                    {{jsonProduct}}
+                </div>
 
-<div 
-*ngIf="model.getProducts().length; then productList else noProducts">
-    
-</div>
+                <div class="form-group">
+                    <label for="">ID</label>
+                    <input required type="text" class="form-control"
+                    [(ngModel)]="newProduct.id" #id="ngModel">
+                    <div class="alert alert-danger" *ngIf="id.touched && !id.valid">
+                        ID is required
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="">Name</label>
+                    <input required minlength="3" pattern="^[A-Za-z]+$" name="name" #name="ngModel"  type="text" class="form-control"
+                    [(ngModel)]="newProduct.name"
+                    (blur)="log(name)"
+                    >
+                    <div class="alert alert-danger" *ngIf="name.touched && !name.valid">
+                        <p *ngFor="let error of getValidationErrors(name)">
+                            {{error}}
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="">Price</label>
+                    <input required #pPrice="ngModel" type="number" class="form-control"
+                    [(ngModel)]="newProduct.price">
+                    <div class="alert alert-danger" *ngIf="pPrice.touched">
+                        <p *ngIf="!pPrice.valid">
+                            <span *ngIf="pPrice.errors['required']"></span>
+                            Price is required
+                        </p>
+                        <p *ngIf="pPrice.value <= 0">Price must be positive value</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="">Description</label>
+                    <textarea name="" id="" cols="30" rows="10" class="form-control" #desc="ngModel"
+                    [(ngModel)]="newProduct.description"></textarea>
+                    <div class="alert alert-danger" *ngIf="desc.touched && !desc.valid">
+                        Name is required
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="">Image Url</label>
+                    <input required type="text" class="form-control" #image="ngModel"
+                    [(ngModel)]="newProduct.imageUrl">
+                    <div class="alert alert-danger" *ngIf="image.touched && !image.valid">
+                        Name is required
+                    </div>
+                </div>
 
-<ng-template #productList>
-    <div class="bg-primary text-white m-2 p-2">
-        There are {{ model.getProducts().length }} products in the repository.
+                <button class="btn btn-primary"
+                (click)="addProduct(newProduct)">Submit</button>
+            </div>
+        </div>
     </div>
-</ng-template>
-<ng-template #noProducts>
-    <div class="bg-primary text-white m-2 p-2">
-        There are no products in the repository.
-    </div>
-</ng-template>
-
-<div [hidden]="model.getProducts().length==0" class="bg-primary text-white m-2 p-2">
-    There are {{ model.getProducts().length }} products in the repository.
 </div>
-
-<div [hidden]="model.getProducts().length!=0" class="bg-primary text-white m-2 p-2">
-    There are no products in the repository.
-</div>
-
-<!-- END ngIf -->
-
-<!-- ngSwitch -->
-
-<div class="bg-info m-2 p-2" [ngSwitch]="model.getProductCount()">
-    <span *ngSwitchCase="0">There are no products</span>
-    <span *ngSwitchCase="1">There are 1 products</span>
-    <span *ngSwitchCase="2">There are 2 products</span>
-    <span *ngSwitchDefault>There are many products</span>
-</div>
-
-<!-- END ngSwitch -->
-
-<div class="bg-info m-2 p-2" [ngSwitch]="model.getProductById(3)?.name">
-    <span *ngSwitchCase="productName">Galaxy M31</span>
-    <span *ngSwitchCase="'Galaxy M32'">Galaxy M32</span>
-    <span *ngSwitchCase="'Galaxy M33'">Galaxy M33</span>
-    <span *ngSwitchCase="'Galaxy M34'">Galaxy M34</span>
-    <span *ngSwitchDefault>Other Product</span>
-</div>
-
-<!-- ngFor -->
-
-<ul class="list-group my-5">
-    <li class="list-group-item" *ngFor="let item of model.getProducts();index as i;first as isFirst;last as isLast; odd as isOdd; even as isEven">
-        {{i + 1}} - {{ item.name }}
-        <span *ngIf="isFirst" class="badge bg-success">
-            First
-        </span>
-        <span *ngIf="isLast" class="badge bg-secondary">
-            Last
-        </span>
-        <span *ngIf="isEven" class="badge bg-primary">
-            Even
-        </span>
-        <span *ngIf="isOdd" class="badge bg-info">
-            Odd
-        </span>
-    </li>
-</ul>
-
-<!-- END ngFor -->
-
-<div class="m-5">
-    <button class="btn btn-primary" (click)="addProduct()">
-        Add Product
-    </button>
-    <ul class="list-group mt-2 list-unstyled">
-        <li *ngFor="let item of model.getProducts()" class="mb-2">
-            {{item.name}}
-            <button class="btn btn-danger" (click)="deleteProduct(item)"> Delete </button>
-        </li>
-        
-    </ul>
-</div>
-
-<!-- Template Outlet - Used to prevent code repeating -->
-
-<ng-template #productListTemp let-items="items">
-    <div class="m-5">
-        <ul class="list-group mt-2">
-            <li *ngFor="let item of model.getProducts()" class="list-group">
-                {{ item.name }}
-            </li>
-        </ul>
-    </div>
-</ng-template>
-
-<ng-template 
-    [ngTemplateOutlet]="productListTemp"
-    ngTemplateOutletContext="{items: model.getProducts()}"></ng-template>
-<ng-template 
-    [ngTemplateOutlet]="productListTemp"
-    ngTemplateOutletContext="{items: model.getProducts()}"></ng-template>
-
-<!-- END Template Outlet -->
-
-<!-- Custom Directives -->
-
-<input type="text" appInputEmail style="border: 1px solid black;" class="rounded">
-
-<!-- END Custom Directives -->
