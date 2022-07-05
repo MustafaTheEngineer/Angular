@@ -13,6 +13,7 @@ export class AdminProductsComponent {
   products?:Product[];
   model:ProductRepository;
   selectedProduct?:Product;
+  
 
   constructor() {
     this.model = new ProductRepository();
@@ -42,12 +43,12 @@ export class AdminProductsComponent {
 
    updateProduct(){
     if(this.selectedProduct.id != 0){
-      const newProduct:Product = this.model.getProductById(this.selectedProduct.id);
+      const updatedProduct:Product = this.model.getProductById(this.selectedProduct.id);
 
-      newProduct.name = this.selectedProduct.name;
-      newProduct.price = this.selectedProduct.price;
-      newProduct.description = this.selectedProduct.description;
-      newProduct.imageUrl = this.selectedProduct.imageUrl;
+      updatedProduct.name = this.selectedProduct.name;
+      updatedProduct.price = this.selectedProduct.price;
+      updatedProduct.description = this.selectedProduct.description;
+      updatedProduct.imageUrl = this.selectedProduct.imageUrl;
 
       this.selectedProduct = {
         id: 0,
