@@ -1,7 +1,8 @@
 import { Component, NgModule } from '@angular/core';
 import { ProductRepository } from '../repository.model';
 import { Product } from './product.model';
-import { FormsModule, NgModel } from "@angular/forms";
+import { FormsModule, NgForm, NgModel } from "@angular/forms";
+import { SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'product',
@@ -15,12 +16,13 @@ export class ProductComponent {
   model:ProductRepository = new ProductRepository();
 
   newProduct:Product={
-    id:0,
-    name:"",
-    price:0,
-    description: "",
-    imageUrl:""
+    id:null,
+    name:null,
+    price:null,
+    description: null,
+    imageUrl:null
   };
+  formSubmitted:boolean = false;
 
   get jsonProduct(){
     return JSON.stringify(this.newProduct);
@@ -33,19 +35,16 @@ export class ProductComponent {
     this.model.deleteProduct(product);
   }
 
-  log(l:NgModel){
-    console.log(l.errors);
-  }
 
-  getValidationErrors(state:NgModel):string[]{
-    let ctrlName:string = state.name;
+  getValidationErrors(state:any,key:string):string[]{
+    let ctrlName:string = state.name || key;
     let messages:string[]=[];
 
     if(state.errors){
       for(let errorName in state.errors){
         switch(errorName){
           case "required":
-            messages.push(`You must enter a ${state.name}`);
+            messages.push(`You must enter a ${ctrlName}`);
           break;
           case "minlength":
             messages.push(`Min 3 character`);
@@ -57,7 +56,26 @@ export class ProductComponent {
         }
       }
     }
-    
+    return messages;
+  }
+
+  submitForm(form:NgForm){
+    this.formSubmitted = true;
+    if (form.valid) {
+      this.addProduct(this.newProduct);
+      this.newProduct = new Product();
+      form.reset();
+      this.formSubmitted = false;
+    }
+  }
+
+  getFormErrors(form:NgForm):string[]{
+    let messages:string[] = [];
+
+    Object.keys(form.controls).forEach(k => {
+      this.getValidationErrors(form.controls[k],k).forEach(message => messages.push(message));
+    });
+
     return messages;
   }
 
