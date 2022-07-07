@@ -1,8 +1,9 @@
 import { Component, NgModule } from '@angular/core';
 import { ProductRepository } from '../repository.model';
 import { Product } from './product.model';
-import { FormsModule, NgForm, NgModel } from "@angular/forms";
+import { FormControl, FormGroup, FormsModule, NgForm, NgModel, Validators } from "@angular/forms";
 import { SafeResourceUrl } from '@angular/platform-browser';
+import { ImageValidators } from '../image.validators';
 
 @Component({
   selector: 'product',
@@ -11,72 +12,45 @@ import { SafeResourceUrl } from '@angular/platform-browser';
 })
 export class ProductComponent {
 
-  constructor() { }
+  productForm:FormGroup = new FormGroup({
+    id : new FormControl(null),
+    price : new FormControl(null,Validators.required),
+    name : new FormControl(null,[
+        Validators.required,
+        Validators.minLength(5),
+        Validators.maxLength(20)
+      ]),
+    desc : new FormControl(null),
+    image : new FormControl(null,[
+      Validators.required,
+      ImageValidators.isValidExtension
+    ])
+  });
 
-  model:ProductRepository = new ProductRepository();
-
-  newProduct:Product={
-    id:null,
-    name:null,
-    price:null,
-    description: null,
-    imageUrl:null
-  };
-  formSubmitted:boolean = false;
-
-  get jsonProduct(){
-    return JSON.stringify(this.newProduct);
-  }
-  addProduct(p:Product){
-    console.log("New product" + this.jsonProduct)
-  }
-
-  deleteProduct(product:Product){
-    this.model.deleteProduct(product);
+  get name(){
+    return this.productForm.get('name');
   }
 
-
-  getValidationErrors(state:any,key:string):string[]{
-    let ctrlName:string = state.name || key;
-    let messages:string[]=[];
-
-    if(state.errors){
-      for(let errorName in state.errors){
-        switch(errorName){
-          case "required":
-            messages.push(`You must enter a ${ctrlName}`);
-          break;
-          case "minlength":
-            messages.push(`Min 3 character`);
-          break;
-          case "pattern":
-            messages.push(`You must enter only spaces and letters`);
-          break;
-
-        }
-      }
-    }
-    return messages;
+  get image(){
+    return this.productForm.get('image');
   }
 
-  submitForm(form:NgForm){
-    this.formSubmitted = true;
-    if (form.valid) {
-      this.addProduct(this.newProduct);
-      this.newProduct = new Product();
-      form.reset();
-      this.formSubmitted = false;
-    }
+  log(){
+    console.log(this.name.errors['minlength']);
   }
 
-  getFormErrors(form:NgForm):string[]{
-    let messages:string[] = [];
+  onSubmit(){
+    console.log(this.productForm.value);
+  }
 
-    Object.keys(form.controls).forEach(k => {
-      this.getValidationErrors(form.controls[k],k).forEach(message => messages.push(message));
+  updateProduct(){
+    this.productForm.patchValue({
+      id: 6,
+      name: 'IPhone xxl',
+      price: 50000,
+      desc: "trial",
+      image: '2.jpg'
     });
-
-    return messages;
   }
 
 }

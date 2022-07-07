@@ -6,7 +6,7 @@ import { ProductComponent } from './product/product.component';
 import { SummaryPipe } from './summary.pipe';
 import { InputEmailDirective } from './input-email.directive';
 import { AdminProductsComponent } from './admin-products/admin-products.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -18,7 +18,8 @@ import { FormsModule } from '@angular/forms';
   ],
   imports: [
     BrowserModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
