@@ -1,0 +1,78 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-10">
+            <div class="m-5">
+                <div class="bg-info text-white p-2" [class.invisible]="pName.value == ''">
+                    Selected Product:
+                    <span>
+                        {{pName.value }} 
+                    </span>
+                    
+                </div>
+            
+                <table class="table table-sm table-bordered mt-2">
+                        <thead>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Description</th>
+                            <th>Image</th>
+                            <th>Ops</th>
+                        </thead>
+                    <tbody>
+                        <tr *ngFor="let item of products" 
+                        (mouseover)="pName.value = item.name"
+                        [class.bg-info]="pName.value == item.name"
+                        >
+                            <td>{{item.id}}</td>
+                            <td>{{item.name}}</td>
+                            <td>{{item.price}}</td>
+                            <td>{{item.description}}</td>
+                            <td>
+                                <img src="/assets/img/{{item.imageUrl}}" width="80">
+                            </td>
+                            <td class="d-flex justify-content-around align-items-center">
+                                <button class="btn btn-sm btn-danger">Delete</button>
+                                <button class="btn btn-sm btn-warning" (click)="selectedProduct = item; editProduct(item);">Edit</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group">
+                <label for="search-product">Product Name</label>
+                <input #pName [value]="selectedProduct.name" (keyup.enter)="selectProduct(pName.value)" type="text" class="form-control" id="search-product"
+                >
+                <button class="btn btn-primary mt-3 mb-5">Search</button>
+            </div>
+
+
+            <div class="form-group">
+                <label for="product-name"> Name</label>
+                <input [(ngModel)]="selectedProduct.name" (keyup.enter)="pPrice.focus()" type="text" class="form-control" id="product-name"
+                >
+            </div>
+            <div class="form-group">
+                <label for="product-price"> Price</label>
+                <input #pPrice [(ngModel)]="selectedProduct.price" (keyup.enter)="pDesc.focus()" type="text" class="form-control" id="product-price"
+                >
+            </div>
+            <div class="form-group">
+                <label for="product-desc"> Description</label>
+                <input #pDesc [(ngModel)]="selectedProduct.description" (keyup.enter)="pImgUrl.focus()" type="text" class="form-control" id="product-desc"
+                >
+            </div>
+            <div class="form-group">
+                <label for="product-image"> Image Url</label>
+                <input #pImgUrl [(ngModel)]="selectedProduct.imageUrl" (keyup.enter)="editProduct(selectedProduct)" type="text" class="product-image" id="search-product"
+                >
+                <button class="btn btn-primary mt-3" (click)="
+                    updateProduct()
+                ">Update</button>
+            </div>
+        </div>
+    </div>
+</div>
+

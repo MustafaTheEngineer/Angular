@@ -1,32 +1,56 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgModule } from '@angular/core';
 import { ProductRepository } from '../repository.model';
 import { Product } from './product.model';
+import { FormControl, FormGroup, FormsModule, NgForm, NgModel, Validators } from "@angular/forms";
+import { SafeResourceUrl } from '@angular/platform-browser';
+import { ImageValidators } from '../image.validators';
 
 @Component({
   selector: 'product',
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.css']
 })
-export class ProductComponent implements OnInit {
+export class ProductComponent {
 
-  constructor() { }
+  productForm:FormGroup = new FormGroup({
+    id : new FormControl(null),
+    price : new FormControl(null,Validators.required),
+    name : new FormControl(null,[
+        Validators.required,
+        Validators.minLength(5),
+        Validators.maxLength(20)
+      ]),
+    desc : new FormControl(null),
+    image : new FormControl(null,[
+      Validators.required,
+      ImageValidators.isValidExtension
+    ])
+  });
 
-  ngOnInit(): void {
+  get name(){
+    return this.productForm.get('name');
   }
 
-  model:ProductRepository = new ProductRepository();
-
-  productName?:string  = this.model.getProductById(1)?.name;
-
-  addProduct(){
-    this.model.addProduct(
-      new Product(6,"Galaxy M36","Best phone","6.webp")
-    );
+  get image(){
+    return this.productForm.get('image');
   }
 
-  deleteProduct(product:Product){
-    this.model.deleteProduct(product);
+  log(){
+    console.log(this.name.errors['minlength']);
   }
 
+  onSubmit(){
+    console.log(this.productForm.value);
+  }
+
+  updateProduct(){
+    this.productForm.patchValue({
+      id: 6,
+      name: 'IPhone xxl',
+      price: 50000,
+      desc: "trial",
+      image: '2.jpg'
+    });
+  }
 
 }
