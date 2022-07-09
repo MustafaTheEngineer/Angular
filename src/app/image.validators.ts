@@ -12,10 +12,8 @@ export class ImageValidators{
             return {
                 wrongExtension: true
             }
-        }else
-            return null;
+        }
 
-        
-        
+        return null;
     }
 }
