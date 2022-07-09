@@ -1,3 +1,7 @@
+<div class="alert alert-danger" *ngIf="error">
+  {{ error.message }}
+</div>
+
 <input type="text" class="form-control mb-2" #title
 (keyup.enter)="createPost(title)" />
 <ul class="list-group">
