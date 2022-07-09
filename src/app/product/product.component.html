@@ -1,108 +1,47 @@
-<!-- ngIf -->
+<form class="p-5" [formGroup]="productForm" (ngSubmit)="log()">
 
-<div 
-*ngIf="model.getProducts().length; then productList else noProducts">
-    
-</div>
+  <div class="form-group">
+    <label for="">ID</label>
+    <input class="form-control" formControlName="id"  />
+    Name : {{ productForm.value['id'] }}
+  </div>
 
-<ng-template #productList>
-    <div class="bg-primary text-white m-2 p-2">
-        There are {{ model.getProducts().length }} products in the repository.
+  <div class="form-group">
+    <label for="">Name</label>
+    <input class="form-control" formControlName="name" />
+    <div class="alert alert-danger" *ngIf="name.touched && name.invalid">
+      <ul>
+        <li *ngIf="name.errors['required']">Name is required</li>
+        <li *ngIf="name.errors['minlength']">Min. {{name.errors['minlength'].requiredLength}} characters</li>
+        <li *ngIf="name.errors['maxlength']">Max. {{name.errors['maxlength'].requiredLength}} characters</li>
+      </ul>
+      
     </div>
-</ng-template>
-<ng-template #noProducts>
-    <div class="bg-primary text-white m-2 p-2">
-        There are no products in the repository.
+  </div>
+
+  <div class="form-group">
+    <label for="">Price</label>
+    <input class="form-control" formControlName="price" />
+    Name : {{ productForm.value['price'] }}
+  </div>
+
+  <div class="form-group">
+    <label for="">Description</label>
+    <textarea class="form-control" formControlName="desc"></textarea>
+    Name : {{ productForm.value['desc'] }}
+  </div>
+
+  <div class="form-group">
+    <label for="">Image Url</label>
+    <input class="form-control" formControlName="image" />
+    <div class="alert alert-danger" *ngIf="image.touched && image.invalid">
+      <ul>
+        <li *ngIf="image.errors['required']">Image is required</li>
+        <li *ngIf="image.errors['wrongExtension']">Wrong extension</li>
+      </ul>
     </div>
-</ng-template>
+  </div>
 
-<div [hidden]="model.getProducts().length==0" class="bg-primary text-white m-2 p-2">
-    There are {{ model.getProducts().length }} products in the repository.
-</div>
+  <button class="btn btn-primary mt-3">Submit</button>
 
-<div [hidden]="model.getProducts().length!=0" class="bg-primary text-white m-2 p-2">
-    There are no products in the repository.
-</div>
-
-<!-- END ngIf -->
-
-<!-- ngSwitch -->
-
-<div class="bg-info m-2 p-2" [ngSwitch]="model.getProductCount()">
-    <span *ngSwitchCase="0">There are no products</span>
-    <span *ngSwitchCase="1">There are 1 products</span>
-    <span *ngSwitchCase="2">There are 2 products</span>
-    <span *ngSwitchDefault>There are many products</span>
-</div>
-
-<!-- END ngSwitch -->
-
-<div class="bg-info m-2 p-2" [ngSwitch]="model.getProductById(3)?.name">
-    <span *ngSwitchCase="productName">Galaxy M31</span>
-    <span *ngSwitchCase="'Galaxy M32'">Galaxy M32</span>
-    <span *ngSwitchCase="'Galaxy M33'">Galaxy M33</span>
-    <span *ngSwitchCase="'Galaxy M34'">Galaxy M34</span>
-    <span *ngSwitchDefault>Other Product</span>
-</div>
-
-<!-- ngFor -->
-
-<ul class="list-group my-5">
-    <li class="list-group-item" *ngFor="let item of model.getProducts();index as i;first as isFirst;last as isLast; odd as isOdd; even as isEven">
-        {{i + 1}} - {{ item.name }}
-        <span *ngIf="isFirst" class="badge bg-success">
-            First
-        </span>
-        <span *ngIf="isLast" class="badge bg-secondary">
-            Last
-        </span>
-        <span *ngIf="isEven" class="badge bg-primary">
-            Even
-        </span>
-        <span *ngIf="isOdd" class="badge bg-info">
-            Odd
-        </span>
-    </li>
-</ul>
-
-<!-- END ngFor -->
-
-<div class="m-5">
-    <button class="btn btn-primary" (click)="addProduct()">
-        Add Product
-    </button>
-    <ul class="list-group mt-2 list-unstyled">
-        <li *ngFor="let item of model.getProducts()" class="mb-2">
-            {{item.name}}
-            <button class="btn btn-danger" (click)="deleteProduct(item)"> Delete </button>
-        </li>
-        
-    </ul>
-</div>
-
-<!-- Template Outlet - Used to prevent code repeating -->
-
-<ng-template #productListTemp let-items="items">
-    <div class="m-5">
-        <ul class="list-group mt-2">
-            <li *ngFor="let item of model.getProducts()" class="list-group">
-                {{ item.name }}
-            </li>
-        </ul>
-    </div>
-</ng-template>
-
-<ng-template 
-    [ngTemplateOutlet]="productListTemp"
-    ngTemplateOutletContext="{items: model.getProducts()}"></ng-template>
-<ng-template 
-    [ngTemplateOutlet]="productListTemp"
-    ngTemplateOutletContext="{items: model.getProducts()}"></ng-template>
-
-<!-- END Template Outlet -->
-
-<!-- Custom Directives -->
-
-<input type="text" appInputEmail style="border: 1px solid black;" class="rounded">
-
-<!-- END Custom Directives -->
+</form>
