@@ -1,0 +1,8 @@
+<p>
+    {{selectedProduct.id}} -
+    {{selectedProduct.name}}
+</p>
+
+<a [routerLink]="['/products',selectedProduct.id]">
+    {{selectedProduct.name}}
+</a>
